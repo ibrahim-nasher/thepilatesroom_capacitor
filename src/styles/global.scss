@@ -1,0 +1,101 @@
+@import './variables';
+@import './mixins';
+@import './reset';
+
+/* Safe area handling for iOS notch */
+.safe-area-top {
+  padding-top: var(--safe-area-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: var(--safe-area-bottom);
+}
+
+/* Native-like scroll behavior */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Disable pull-to-refresh on overscrolling */
+body {
+  overscroll-behavior-y: none;
+}
+
+/* Native-like tap highlight */
+* {
+  -webkit-tap-highlight-color: rgba($color-primary, 0.1);
+}
+
+/* Loading spinner */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba($color-primary, 0.2);
+  border-top-color: $color-primary;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.text-start {
+  text-align: start;
+}
+
+.text-end {
+  text-align: end;
+}
+
+.mt-1 { margin-top: $spacing-xs; }
+.mt-2 { margin-top: $spacing-sm; }
+.mt-3 { margin-top: $spacing-md; }
+.mt-4 { margin-top: $spacing-lg; }
+.mt-5 { margin-top: $spacing-xl; }
+
+.mb-1 { margin-bottom: $spacing-xs; }
+.mb-2 { margin-bottom: $spacing-sm; }
+.mb-3 { margin-bottom: $spacing-md; }
+.mb-4 { margin-bottom: $spacing-lg; }
+.mb-5 { margin-bottom: $spacing-xl; }
+
+.pt-1 { padding-top: $spacing-xs; }
+.pt-2 { padding-top: $spacing-sm; }
+.pt-3 { padding-top: $spacing-md; }
+.pt-4 { padding-top: $spacing-lg; }
+.pt-5 { padding-top: $spacing-xl; }
+
+.pb-1 { padding-bottom: $spacing-xs; }
+.pb-2 { padding-bottom: $spacing-sm; }
+.pb-3 { padding-bottom: $spacing-md; }
+.pb-4 { padding-bottom: $spacing-lg; }
+.pb-5 { padding-bottom: $spacing-xl; }
+
+.px-1 { padding-inline: $spacing-xs; }
+.px-2 { padding-inline: $spacing-sm; }
+.px-3 { padding-inline: $spacing-md; }
+.px-4 { padding-inline: $spacing-lg; }
+.px-5 { padding-inline: $spacing-xl; }
+
+.py-1 { padding-block: $spacing-xs; }
+.py-2 { padding-block: $spacing-sm; }
+.py-3 { padding-block: $spacing-md; }
+.py-4 { padding-block: $spacing-lg; }
+.py-5 { padding-block: $spacing-xl; }
+
+/* RTL support */
+html[dir='rtl'] {
+  direction: rtl;
+}

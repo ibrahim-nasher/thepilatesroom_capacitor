@@ -1,0 +1,15 @@
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.main-layout {
+  min-height: 100vh;
+  @include flex-column;
+  background: $color-background;
+  
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: calc(60px + var(--safe-area-bottom)); // Bottom nav height + safe area
+    -webkit-overflow-scrolling: touch;
+  }
+}

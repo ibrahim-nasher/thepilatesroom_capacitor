@@ -1,0 +1,340 @@
+// Flexbox helpers
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-column-center {
+  @include flex-column;
+  align-items: center;
+  justify-content: center;
+}
+
+// Typography mixins
+@mixin heading-1 {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  line-height: 1.2;
+  color: $color-text-primary;
+}
+
+@mixin heading-2 {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+  line-height: 1.3;
+  color: $color-text-primary;
+}
+
+@mixin heading-3 {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  line-height: 1.4;
+  color: $color-text-primary;
+}
+
+@mixin heading-4 {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-medium;
+  line-height: 1.4;
+  color: $color-text-primary;
+}
+
+@mixin body-text {
+  font-size: $font-size-base;
+  font-weight: $font-weight-regular;
+  line-height: 1.5;
+  color: $color-text-primary;
+}
+
+@mixin body-small {
+  font-size: $font-size-md;
+  font-weight: $font-weight-regular;
+  line-height: 1.5;
+  color: $color-text-secondary;
+}
+
+@mixin caption {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-regular;
+  line-height: 1.4;
+  color: $color-text-secondary;
+}
+
+@mixin label {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  line-height: 1.4;
+  color: $color-text-primary;
+}
+
+// Button base styles
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md $spacing-lg;
+  border-radius: $radius-md;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-base;
+  cursor: pointer;
+  transition: all $transition-base $ease-in-out;
+  border: none;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+}
+
+// Card styles
+@mixin card {
+  background: $color-surface;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+  padding: $spacing-md;
+}
+
+@mixin card-elevated {
+  @include card;
+  box-shadow: $shadow-lg;
+}
+
+// Input base styles
+@mixin input-base {
+  width: 100%;
+  padding: $spacing-md;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  background: $color-surface;
+  color: $color-text-primary;
+  transition: border-color $transition-base $ease-in-out;
+  outline: none;
+  
+  &:focus {
+    border-color: $color-primary;
+  }
+  
+  &::placeholder {
+    color: $color-text-disabled;
+  }
+  
+  &:disabled {
+    background: $color-background;
+    cursor: not-allowed;
+  }
+}
+
+// Safe area padding
+@mixin safe-area-top {
+  padding-top: max($spacing-md, $safe-area-top);
+}
+
+@mixin safe-area-bottom {
+  padding-bottom: max($spacing-md, $safe-area-bottom);
+}
+
+@mixin safe-area-left {
+  padding-left: max($spacing-md, $safe-area-left);
+}
+
+@mixin safe-area-right {
+  padding-right: max($spacing-md, $safe-area-right);
+}
+
+@mixin safe-area-inset {
+  @include safe-area-top;
+  @include safe-area-bottom;
+  @include safe-area-left;
+  @include safe-area-right;
+}
+
+// RTL support
+@mixin rtl {
+  [dir="rtl"] & {
+    @content;
+  }
+}
+
+@mixin ltr {
+  [dir="ltr"] & {
+    @content;
+  }
+}
+
+// Logical properties for RTL
+@mixin margin-start($value) {
+  margin-inline-start: $value;
+}
+
+@mixin margin-end($value) {
+  margin-inline-end: $value;
+}
+
+@mixin padding-start($value) {
+  padding-inline-start: $value;
+}
+
+@mixin padding-end($value) {
+  padding-inline-end: $value;
+}
+
+// Text truncation
+@mixin truncate($lines: 1) {
+  @if $lines == 1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Hide scrollbar but allow scrolling
+@mixin hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// Smooth scroll
+@mixin smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+// Aspect ratio box
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  
+  &::before {
+    content: '';
+    display: block;
+    padding-top: ($height / $width) * 100%;
+  }
+  
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Loading spinner
+@mixin spinner($size: 20px, $color: $color-primary) {
+  width: $size;
+  height: $size;
+  border: 2px solid transparent;
+  border-top-color: $color;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Fade in animation
+@mixin fade-in($duration: $transition-base) {
+  animation: fadeIn $duration $ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Slide up animation
+@mixin slide-up($duration: $transition-base) {
+  animation: slideUp $duration $ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Focus visible (keyboard navigation)
+@mixin focus-visible {
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+// Overlay/backdrop
+@mixin overlay($color: rgba(0, 0, 0, 0.5)) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $color;
+  z-index: $z-modal;
+}
+
+// Bottom sheet
+@mixin bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-surface;
+  border-top-left-radius: $radius-2xl;
+  border-top-right-radius: $radius-2xl;
+  box-shadow: $shadow-xl;
+  max-height: 90vh;
+  overflow: hidden;
+  z-index: $z-modal + 1;
+  
+  @include safe-area-bottom;
+}

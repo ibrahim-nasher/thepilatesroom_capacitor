@@ -1,0 +1,80 @@
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: $color-white;
+  border-top: 1px solid $color-border;
+  @include flex-row;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 -2px 8px rgba($color-black, 0.1);
+  
+  &__item {
+    @include flex-column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    color: $color-text-secondary;
+    transition: color $transition-fast;
+    position: relative;
+    
+    &--active {
+      color: $color-primary;
+      
+      .bottom-navigation__label {
+        font-weight: 600;
+      }
+    }
+    
+    &:active {
+      transform: scale(0.95);
+      transition: transform 0.1s;
+    }
+  }
+  
+  &__icon {
+    position: relative;
+    margin-bottom: $spacing-xxs;
+    
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  &__badge {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    background: $color-error;
+    color: $color-white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 4px;
+    border-radius: 10px;
+    min-width: 16px;
+    height: 16px;
+    @include flex-center;
+  }
+  
+  &__label {
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+  }
+}
+
+// RTL support
+html[dir='rtl'] {
+  .bottom-navigation__badge {
+    right: auto;
+    left: -8px;
+  }
+}
