@@ -15,13 +15,13 @@ export default defineConfig({
       '@utils': path.resolve(__dirname, './src/utils'),
       '@assets': path.resolve(__dirname, './src/assets'),
       '@styles': path.resolve(__dirname, './src/styles'),
+      '@i18n': path.resolve(__dirname, './src/i18n'),
       '@types': path.resolve(__dirname, './src/types'),
     },
   },
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/styles/_variables.scss"; @import "@/styles/_mixins.scss";`,
         api: 'modern-compiler',
       },
     },
@@ -37,7 +37,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'firebase-vendor': ['firebase', '@capacitor-firebase/authentication'],
         },
       },
     },

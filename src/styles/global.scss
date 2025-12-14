@@ -1,6 +1,6 @@
-@import './variables';
-@import './mixins';
-@import './reset';
+@use './variables' as *;
+@use './mixins' as *;
+@use './reset';
 
 /* Safe area handling for iOS notch */
 .safe-area-top {

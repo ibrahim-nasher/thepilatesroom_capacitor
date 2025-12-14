@@ -54,7 +54,7 @@ apiClient.interceptors.response.use(
       console.error('Not Found: The requested resource was not found');
     }
     
-    if (response?.status >= 500) {
+    if (response && response.status >= 500) {
       console.error('Server Error: Something went wrong on the server');
     }
     

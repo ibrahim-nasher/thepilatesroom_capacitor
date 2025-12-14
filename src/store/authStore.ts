@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { Preferences } from '@capacitor/preferences';
 
-interface User {
+export interface User {
   id: string;
   email: string;
   firstName: string;
@@ -12,7 +12,7 @@ interface User {
   notificationsEnabled: boolean;
 }
 
-interface AuthState {
+export interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
