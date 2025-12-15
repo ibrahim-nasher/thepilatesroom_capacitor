@@ -1,39 +1,115 @@
 import { api } from './client';
-import type { ClassSchedule, ClassCategory } from '@store';
 
-interface GetSchedulesParams {
-  date?: string; // ISO date
-  categoryId?: string;
-  startDate?: string;
-  endDate?: string;
+// API Response Types
+interface ClassScheduleResponse {
+  status: boolean;
+  class_schedule: ClassSchedule[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  message: string;
+}
+
+interface CategoryResponse {
+  status: boolean;
+  categories: Category[];
+  message: string;
+}
+
+// Data Types
+export interface Category {
+  id: string;
+  name: string;
+  description?: string;
+  image_url?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ClassSchedule {
+  id: string;
+  class_id: string;
+  class_name: string;
+  category_id: string;
+  category_name: string;
+  date: string;
+  time: string;
+  duration: number; // in minutes
+  instructor_id: string;
+  instructor_name: string;
+  instructor_image?: string;
+  type: 'group' | 'private';
+  capacity: number;
+  booked_count: number;
+  spots_remaining: number;
+  is_waitlist: boolean;
+  status: 'active' | 'cancelled' | 'completed';
+  created_at: string;
+  updated_at: string;
+}
+
+// API Query Parameters
+interface GetClassesParams {
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  type?: 'group' | 'private';
+  category_id?: string;
+  session_id?: string;
+  from_date?: string; // YYYY-MM-DD
+  to_date?: string; // YYYY-MM-DD
+  v2?: boolean;
 }
 
 export const classApi = {
   // Get all categories
-  getCategories: () =>
-    api.get<ClassCategory[]>('/classes/categories'),
+  getCategories: async (): Promise<Category[]> => {
+    const response = await api.get<CategoryResponse>('/v1/category/');
+    return response.categories || [];
+  },
   
   // Get category by ID
-  getCategoryById: (categoryId: string) =>
-    api.get<ClassCategory>(`/classes/categories/${categoryId}`),
+  getCategoryById: async (categoryId: string): Promise<Category | null> => {
+    const response = await api.get<{ status: boolean; category: Category; message: string }>(`/v1/category/${categoryId}`);
+    return response.category || null;
+  },
   
-  // Get class schedules
-  getSchedules: (params?: GetSchedulesParams) =>
-    api.get<ClassSchedule[]>('/classes/schedules', { params }),
+  // Get class schedules with filters
+  getClasses: async (params?: GetClassesParams): Promise<ClassScheduleResponse> => {
+    return api.get<ClassScheduleResponse>('/v1/classes/', { params });
+  },
   
-  // Get schedule by ID
-  getScheduleById: (scheduleId: string) =>
-    api.get<ClassSchedule>(`/classes/schedules/${scheduleId}`),
+  // Get class schedule by ID
+  getClassById: async (classId: string): Promise<ClassSchedule | null> => {
+    const response = await api.get<{ status: boolean; classDetail: ClassSchedule; message: string }>(`/v1/classes/${classId}`);
+    return response.classDetail || null;
+  },
   
   // Get schedules for a specific date range
-  getSchedulesByDateRange: (startDate: string, endDate: string) =>
-    api.get<ClassSchedule[]>('/classes/schedules', {
-      params: { startDate, endDate },
-    }),
+  getSchedulesByDateRange: async (from_date: string, to_date: string): Promise<ClassSchedule[]> => {
+    const response = await api.get<ClassScheduleResponse>('/v1/classes/', {
+      params: { from_date, to_date },
+    });
+    return response.class_schedule || [];
+  },
   
   // Get schedules for a specific category
-  getSchedulesByCategory: (categoryId: string) =>
-    api.get<ClassSchedule[]>('/classes/schedules', {
-      params: { categoryId },
-    }),
+  getSchedulesByCategory: async (category_id: string, from_date?: string, to_date?: string): Promise<ClassSchedule[]> => {
+    const response = await api.get<ClassScheduleResponse>('/v1/classes/', {
+      params: { category_id, from_date, to_date },
+    });
+    return response.class_schedule || [];
+  },
+  
+  // Get schedules for a specific date
+  getSchedulesByDate: async (date: string, category_id?: string): Promise<ClassSchedule[]> => {
+    const response = await api.get<ClassScheduleResponse>('/v1/classes/', {
+      params: { 
+        from_date: date,
+        to_date: date,
+        category_id,
+      },
+    });
+    return response.class_schedule || [];
+  },
 };

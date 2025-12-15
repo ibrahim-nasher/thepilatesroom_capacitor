@@ -199,11 +199,21 @@
   flex-direction: column;
   gap: 12px;
 
-  &__empty {
+  &__empty,
+  &__loading,
+  &__error {
     text-align: center;
-    color: $text-gray;
     padding: 40px 16px;
     font-size: 16px;
+  }
+
+  &__empty,
+  &__loading {
+    color: $text-gray;
+  }
+
+  &__error {
+    color: $error;
   }
 }
 

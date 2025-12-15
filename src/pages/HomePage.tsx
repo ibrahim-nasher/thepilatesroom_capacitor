@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
+import { classApi, type ClassSchedule, type Category } from '../services/api/classes';
 import './HomePage.scss';
 
 interface DateDay {
@@ -10,18 +11,6 @@ interface DateDay {
   isSelected: boolean;
 }
 
-interface ClassTime {
-  id: string;
-  time: string;
-  duration: string;
-  name: string;
-  type: 'group' | 'private';
-  trainer: string;
-  spotsRemaining: number;
-  totalSpots: number;
-  isWaitlist: boolean;
-}
-
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuthStore();
@@ -29,47 +18,46 @@ const HomePage: React.FC = () => {
   const [calendarDates, setCalendarDates] = useState<DateDay[]>([]);
   const [activeTab, setActiveTab] = useState<'individual' | 'all'>('individual');
   const [selectedCategory, setSelectedCategory] = useState('all');
-
-  // Mock data - replace with API calls
-  const classes: ClassTime[] = [
-    {
-      id: '1',
-      time: '10:00 AM',
-      duration: '50m',
-      name: 'Mat Pilates',
-      type: 'group',
-      trainer: 'Sarah Johnson',
-      spotsRemaining: 20,
-      totalSpots: 25,
-      isWaitlist: false,
-    },
-    {
-      id: '2',
-      time: '11:00 AM',
-      duration: '50m',
-      name: 'Reformer Pilates',
-      type: 'group',
-      trainer: 'Michael Chen',
-      spotsRemaining: 15,
-      totalSpots: 20,
-      isWaitlist: false,
-    },
-    {
-      id: '3',
-      time: '12:00 PM',
-      duration: '50m',
-      name: 'Barre Pilates',
-      type: 'group',
-      trainer: 'Emily Davis',
-      spotsRemaining: 0,
-      totalSpots: 15,
-      isWaitlist: true,
-    },
-  ];
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [classes, setClasses] = useState<ClassSchedule[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     generateCalendarDates(new Date());
+    loadCategories();
   }, []);
+
+  useEffect(() => {
+    loadClasses();
+  }, [selectedDate, selectedCategory]);
+
+  const loadCategories = async () => {
+    try {
+      const data = await classApi.getCategories();
+      setCategories(data);
+    } catch (err) {
+      console.error('Failed to load categories:', err);
+    }
+  };
+
+  const loadClasses = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const dateStr = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD
+      const categoryId = selectedCategory === 'all' ? undefined : selectedCategory;
+      
+      const data = await classApi.getSchedulesByDate(dateStr, categoryId);
+      setClasses(data);
+    } catch (err) {
+      console.error('Failed to load classes:', err);
+      setError('Failed to load classes. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const generateCalendarDates = (currentDate: Date) => {
     const dates: DateDay[] = [];
@@ -110,8 +98,40 @@ const HomePage: React.FC = () => {
 
   const handleBookClass = (classId: string) => {
     console.log('Booking class:', classId);
-    // TODO: Implement booking logic
+    // TODO: Navigate to booking page or show booking modal
   };
+
+  const formatTime = (time: string) => {
+    // Convert 24h format to 12h format if needed
+    return time; // Backend should already provide formatted time
+  };
+
+  if (loading && classes.length === 0) {
+    return (
+      <div className="home-page">
+        <div className="home-header">
+          <div className="home-header__left">
+            <img 
+              src="/icons/common/profilePlaceholder.png" 
+              alt="Profile"
+              className="home-header__avatar"
+            />
+          </div>
+          <div className="home-header__center">
+            <p className="home-header__greeting">{getGreeting()}, {user?.firstName || 'Guest'}</p>
+          </div>
+          <div className="home-header__right">
+            <button className="home-header__notification">
+              <img src="/icons/home/bell.png" alt="Notifications" />
+            </button>
+          </div>
+        </div>
+        <div className="classes-list">
+          <p className="classes-list__loading">{t('common.loading')}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="home-page">
@@ -175,9 +195,9 @@ const HomePage: React.FC = () => {
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
             <option value="all">{t('home.all')}</option>
-            <option value="mat">{t('home.mat')}</option>
-            <option value="reformer">{t('home.reformer')}</option>
-            <option value="barre">{t('home.barre')}</option>
+            {categories.map(cat => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
+            ))}
           </select>
         </div>
       </div>
@@ -200,19 +220,21 @@ const HomePage: React.FC = () => {
 
       {/* Classes List */}
       <div className="classes-list">
-        {classes.length === 0 ? (
+        {error ? (
+          <p className="classes-list__error">{error}</p>
+        ) : classes.length === 0 ? (
           <p className="classes-list__empty">{t('home.noClasses')}</p>
         ) : (
           classes.map(classItem => (
             <div key={classItem.id} className="class-card">
               <div className="class-card__header">
-                <span className="class-card__time">{classItem.time}</span>
-                <span className="class-card__duration">{classItem.duration}</span>
+                <span className="class-card__time">{formatTime(classItem.time)}</span>
+                <span className="class-card__duration">{classItem.duration}m</span>
               </div>
               
               <div className="class-card__body">
                 <div className="class-card__info">
-                  <h3 className="class-card__name">{classItem.name}</h3>
+                  <h3 className="class-card__name">{classItem.class_name}</h3>
                   <span className={`class-card__type class-card__type--${classItem.type}`}>
                     {classItem.type === 'group' ? t('home.group') : t('home.private')}
                   </span>
@@ -221,13 +243,13 @@ const HomePage: React.FC = () => {
                 <div className="class-card__details">
                   <div className="class-card__trainer">
                     <img src="/icons/common/singlePerson.png" alt="" />
-                    <span>{classItem.trainer}</span>
+                    <span>{classItem.instructor_name}</span>
                   </div>
                   <div className="class-card__capacity">
                     <img src="/icons/home/multiPeople.png" alt="" />
                     <span>
-                      {classItem.spotsRemaining > 0 
-                        ? `${classItem.spotsRemaining} ${t('home.spotsRemaining')}`
+                      {classItem.spots_remaining > 0 
+                        ? `${classItem.spots_remaining} ${t('home.spotsRemaining')}`
                         : t('home.noSpots')}
                     </span>
                   </div>
@@ -235,11 +257,11 @@ const HomePage: React.FC = () => {
               </div>
 
               <button 
-                className={`class-card__action ${classItem.isWaitlist ? 'class-card__action--waitlist' : ''}`}
+                className={`class-card__action ${classItem.is_waitlist ? 'class-card__action--waitlist' : ''}`}
                 onClick={() => handleBookClass(classItem.id)}
-                disabled={classItem.isWaitlist}
+                disabled={classItem.status !== 'active'}
               >
-                {classItem.isWaitlist ? (
+                {classItem.is_waitlist ? (
                   <img src="/icons/common/clock.png" alt="Waitlist" />
                 ) : (
                   <img src="/icons/home/plus.png" alt="Book" />
