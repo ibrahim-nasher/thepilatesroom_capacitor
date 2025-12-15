@@ -6,32 +6,32 @@ import './BottomNavigation.scss';
 
 // Use native iOS tab icons
 const HomeIcon: React.FC<{ active?: boolean }> = ({ active }) => (
-  <img 
-    src={active ? '/icons/tabs/Group 56589.png' : '/icons/tabs/Group 56589.png'} 
+  <img
+    src={active ? '/icons/tabs/Group 56589.png' : '/icons/tabs/Group 56589.png'}
     alt="Home"
     style={{ opacity: active ? 1 : 0.5, width: '24px', height: '24px' }}
   />
 );
 
 const ClassesIcon: React.FC<{ active?: boolean }> = ({ active }) => (
-  <img 
-    src={active ? '/icons/tabs/Group 56590.png' : '/icons/tabs/Group 56590.png'} 
+  <img
+    src={active ? '/icons/tabs/Group 56590.png' : '/icons/tabs/Group 56590.png'}
     alt="Classes"
     style={{ opacity: active ? 1 : 0.5, width: '24px', height: '24px' }}
   />
 );
 
 const PackagesIcon: React.FC<{ active?: boolean }> = ({ active }) => (
-  <img 
-    src={active ? '/icons/tabs/Group 56591.png' : '/icons/tabs/Group 56591.png'} 
+  <img
+    src={active ? '/icons/tabs/Group 56591.png' : '/icons/tabs/Group 56591.png'}
     alt="Packages"
     style={{ opacity: active ? 1 : 0.5, width: '24px', height: '24px' }}
   />
 );
 
 const ProfileIcon: React.FC<{ active?: boolean }> = ({ active }) => (
-  <img 
-    src={active ? '/icons/tabs/Group 56592.png' : '/icons/tabs/Group 56592.png'} 
+  <img
+    src={active ? '/icons/tabs/Group 56592.png' : '/icons/tabs/Group 56592.png'}
     alt="Profile"
     style={{ opacity: active ? 1 : 0.5, width: '24px', height: '24px' }}
   />
@@ -49,7 +49,7 @@ const BottomNavigation: React.FC = () => {
   ];
 
   return (
-    <nav className="bottom-navigation safe-area-bottom">
+    <nav className="bottom-navigation">
       {navItems.map(({ path, label, Icon }) => (
         <NavLink
           key={path}

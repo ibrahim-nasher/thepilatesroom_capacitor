@@ -1,4 +1,4 @@
-@import '../styles/colors';
+@use '../styles/colors' as *;
 
 .home-page {
   height: 100%;

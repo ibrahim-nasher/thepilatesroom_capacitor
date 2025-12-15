@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
 
@@ -101,7 +102,7 @@
     background: linear-gradient(
       90deg,
       $color-background-secondary 25%,
-      lighten($color-background-secondary, 5%) 50%,
+      color.adjust($color-background-secondary, $lightness: 5%) 50%,
       $color-background-secondary 75%
     );
     background-size: 200% 100%;
@@ -120,7 +121,7 @@
     background: linear-gradient(
       90deg,
       $color-background-secondary 25%,
-      lighten($color-background-secondary, 5%) 50%,
+      color.adjust($color-background-secondary, $lightness: 5%) 50%,
       $color-background-secondary 75%
     );
     background-size: 200% 100%;
@@ -147,7 +148,7 @@
     background: linear-gradient(
       90deg,
       $color-background-secondary 25%,
-      lighten($color-background-secondary, 5%) 50%,
+      color.adjust($color-background-secondary, $lightness: 5%) 50%,
       $color-background-secondary 75%
     );
     background-size: 200% 100%;
