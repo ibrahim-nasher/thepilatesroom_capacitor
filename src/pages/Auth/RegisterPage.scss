@@ -1,0 +1,120 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+  background: linear-gradient(135deg, rgba($color-primary, 0.05) 0%, rgba($color-primary, 0.15) 100%);
+  
+  // Safe area support
+  @supports (padding-top: env(safe-area-inset-top)) {
+    padding-top: calc($spacing-lg + env(safe-area-inset-top));
+    padding-bottom: calc($spacing-lg + env(safe-area-inset-bottom));
+  }
+}
+
+.register-container {
+  width: 100%;
+  max-width: 500px;
+  background-color: $color-white;
+  border-radius: $border-radius-xl;
+  padding: $spacing-xxl;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  
+  @media (max-width: 768px) {
+    padding: $spacing-xl;
+  }
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+}
+
+.register-title {
+  font-family: $font-family-primary;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin: 0 0 $spacing-sm 0;
+}
+
+.register-subtitle {
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+  margin: 0;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  cursor: pointer;
+  user-select: none;
+  
+  input[type='checkbox'] {
+    margin-top: 3px;
+    cursor: pointer;
+  }
+  
+  span {
+    font-family: $font-family-primary;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: 1.5;
+    
+    a {
+      color: $color-primary;
+      text-decoration: none;
+      font-weight: $font-weight-medium;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.register-footer {
+  margin-top: $spacing-xl;
+  text-align: center;
+}
+
+.login-link {
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+  margin: 0;
+  
+  a {
+    color: $color-primary;
+    text-decoration: none;
+    font-weight: $font-weight-semibold;
+    transition: color $transition-base;
+    
+    &:hover {
+      color: darken($color-primary, 10%);
+      text-decoration: underline;
+    }
+  }
+}

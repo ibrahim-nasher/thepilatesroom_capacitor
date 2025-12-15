@@ -26,13 +26,11 @@ export default defineConfig({
       },
     },
   },
-  server: {
-    port: 3000,
-    host: true,
-  },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
+    minify: 'terser',
+    target: 'es2020',
     rollupOptions: {
       output: {
         manualChunks: {
