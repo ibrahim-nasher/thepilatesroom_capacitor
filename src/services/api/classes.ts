@@ -1,4 +1,10 @@
 import { api } from './client';
+import { 
+  isMockMode, 
+  mockDelay, 
+  mockCategories, 
+  generateMockClasses 
+} from './mockData';
 
 // API Response Types
 interface ClassScheduleResponse {
@@ -64,18 +70,50 @@ interface GetClassesParams {
 export const classApi = {
   // Get all categories
   getCategories: async (): Promise<Category[]> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Getting categories');
+      await mockDelay();
+      return mockCategories;
+    }
     const response = await api.get<CategoryResponse>('/v1/category/');
     return response.categories || [];
   },
   
   // Get category by ID
   getCategoryById: async (categoryId: string): Promise<Category | null> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Getting category by ID:', categoryId);
+      await mockDelay();
+      return mockCategories.find(c => c.id === categoryId) || null;
+    }
     const response = await api.get<{ status: boolean; category: Category; message: string }>(`/v1/category/${categoryId}`);
     return response.category || null;
   },
   
   // Get class schedules with filters
   getClasses: async (params?: GetClassesParams): Promise<ClassScheduleResponse> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Getting classes with params:', params);
+      await mockDelay();
+      const classes = generateMockClasses(
+        params?.from_date || new Date().toISOString().split('T')[0],
+        params?.to_date
+      );
+      
+      // Filter by category if specified
+      const filtered = params?.category_id 
+        ? classes.filter(c => c.category_id === params.category_id)
+        : classes;
+      
+      return {
+        status: true,
+        class_schedule: filtered,
+        total: filtered.length,
+        totalPages: 1,
+        currentPage: 1,
+        message: 'success',
+      };
+    }
     return api.get<ClassScheduleResponse>('/v1/classes/', { params });
   },
   
@@ -114,6 +152,15 @@ export const classApi = {
 
   // Get schedules by date (matching native app pattern)
   getSchedulesByDate: async (date: string, category_id?: string): Promise<ClassSchedule[]> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Getting schedules by date:', date, 'category:', category_id);
+      await mockDelay();
+      const classes = generateMockClasses(date);
+      return category_id 
+        ? classes.filter(c => c.category_id === category_id)
+        : classes;
+    }
+
     const params: any = {
       type: 'individual',
       v2: true,

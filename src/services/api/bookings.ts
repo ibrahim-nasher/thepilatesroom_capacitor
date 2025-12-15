@@ -1,4 +1,11 @@
 import { api } from './client';
+import { 
+  isMockMode, 
+  mockDelay, 
+  mockActivePackages,
+  mockWaitlistClasses,
+  mockBookings
+} from './mockData';
 
 // API Response Types
 interface BookingResponse {
@@ -147,6 +154,11 @@ interface WaitlistData {
 export const bookingApi = {
   // Check if booking is available (before creating)
   checkBookingAvailability: async (data: CheckAvailabilityData): Promise<{ status: boolean; message: string }> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Checking booking availability', data);
+      await mockDelay(300);
+      return { status: true, message: 'Class is available for booking' };
+    }
     console.log('[API Request] POST /v1/user/checkBookingAvailability', data);
     const response = await api.post<BookingResponse>('/v1/user/checkBookingAvailability', data);
     console.log('[API Response]', response);
@@ -155,6 +167,30 @@ export const bookingApi = {
 
   // Create new booking
   addBooking: async (data: CreateBookingData): Promise<BookingResponse> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Creating booking', data);
+      await mockDelay(800);
+      return {
+        status: true,
+        message: 'Booking created successfully',
+        bookingDetails: {
+          id: '999',
+          transaction_id: 'TXN999',
+          user_id: '1',
+          package_id: data.package_id,
+          category_id: data.category_id,
+          session_id: data.session_id,
+          total_bookings: 1,
+          class_limit: 10,
+          start_date: data.start_date || new Date().toISOString().split('T')[0],
+          end_date: data.end_date || new Date().toISOString().split('T')[0],
+          booking_type: data.booking_type,
+          send_reminder: data.send_reminder,
+          payment_status: 'completed',
+          created_at: new Date().toISOString(),
+        }
+      };
+    }
     console.log('[API Request] POST /v1/user/addBooking', data);
     const response = await api.post<BookingResponse>('/v1/user/addBooking', data);
     console.log('[API Response]', response);
@@ -163,12 +199,22 @@ export const bookingApi = {
 
   // Get user's bookings
   getUserBookings: async (params?: { page?: number; limit?: number }): Promise<GetBookingsResponse> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Getting user bookings', params);
+      await mockDelay();
+      return mockBookings;
+    }
     const response = await api.get<GetBookingsResponse>('/v1/user/getUserBookings', { params });
     return response;
   },
 
   // Get active packages (available for booking)
   getActivePackages: async (): Promise<ActivePackage[]> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Getting active packages');
+      await mockDelay();
+      return mockActivePackages;
+    }
     const response = await api.get<ActivePackagesResponse>('/v1/user/getActivePackages');
     return response.user_active_package_booking || [];
   },
@@ -190,6 +236,18 @@ export const bookingApi = {
 
   // Waitlist Management
   addToWaitlist: async (data: WaitlistData): Promise<Waitlist | null> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Adding to waitlist', data);
+      await mockDelay(300);
+      return {
+        id: '999',
+        user_id: '1',
+        class_id: data.class_id.toString(),
+        class_schedule_id: data.class_schedule_id.toString(),
+        startDate: data.startDate,
+        created_at: new Date().toISOString(),
+      };
+    }
     console.log('[API Request] POST /v1/user/addToWaitlist', data);
     const response = await api.post<WaitlistResponse>('/v1/user/addToWaitlist', data);
     console.log('[API Response]', response);
@@ -197,6 +255,11 @@ export const bookingApi = {
   },
 
   removeFromWaitlist: async (data: WaitlistData): Promise<boolean> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Removing from waitlist', data);
+      await mockDelay(300);
+      return true;
+    }
     console.log('[API Request] POST /v1/user/removeFromWaitlist', data);
     const response = await api.post<WaitlistResponse>('/v1/user/removeFromWaitlist', data);
     console.log('[API Response]', response);
@@ -204,6 +267,11 @@ export const bookingApi = {
   },
 
   getMyWaitlist: async (): Promise<WaitlistClass[]> => {
+    if (isMockMode()) {
+      console.log('[MOCK] Getting my waitlist');
+      await mockDelay();
+      return mockWaitlistClasses;
+    }
     const response = await api.get<MyWaitlistResponse>('/v1/user/getMyWaitlist');
     return response.data || [];
   },
