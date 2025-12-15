@@ -88,7 +88,12 @@ export const classApi = {
   // Get schedules for a specific date range
   getSchedulesByDateRange: async (from_date: string, to_date: string): Promise<ClassSchedule[]> => {
     const response = await api.get<ClassScheduleResponse>('/v1/classes/', {
-      params: { from_date, to_date },
+      params: { 
+        type: 'individual',
+        v2: true,
+        from_date, 
+        to_date 
+      },
     });
     return response.class_schedule || [];
   },
@@ -96,20 +101,40 @@ export const classApi = {
   // Get schedules for a specific category
   getSchedulesByCategory: async (category_id: string, from_date?: string, to_date?: string): Promise<ClassSchedule[]> => {
     const response = await api.get<ClassScheduleResponse>('/v1/classes/', {
-      params: { category_id, from_date, to_date },
+      params: { 
+        type: 'individual',
+        v2: true,
+        category_id, 
+        from_date, 
+        to_date 
+      },
     });
     return response.class_schedule || [];
   },
-  
-  // Get schedules for a specific date
+
+  // Get schedules by date (matching native app pattern)
   getSchedulesByDate: async (date: string, category_id?: string): Promise<ClassSchedule[]> => {
-    const response = await api.get<ClassScheduleResponse>('/v1/classes/', {
-      params: { 
-        from_date: date,
-        to_date: date,
-        category_id,
-      },
+    const params: any = {
+      type: 'individual',
+      v2: true,
+      from_date: date,
+      to_date: date,
+    };
+
+    if (category_id) {
+      params.category_id = category_id;
+    }
+
+    console.log('[API Request] GET /v1/classes/', params);
+    
+    const response = await api.get<ClassScheduleResponse>('/v1/classes/', { params });
+    
+    console.log('[API Response]', {
+      status: response.status,
+      totalClasses: response.class_schedule?.length || 0,
+      classes: response.class_schedule
     });
+    
     return response.class_schedule || [];
   },
 };

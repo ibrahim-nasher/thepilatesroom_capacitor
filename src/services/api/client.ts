@@ -1,8 +1,27 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
 import { useAuthStore } from '@store';
 
-// Base URL from environment or default
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.pilatesroom.com/api';
+/**
+ * Get API base URL based on current environment
+ */
+const getApiBaseUrl = (): string => {
+  const env = import.meta.env.VITE_APP_ENV || 'prod';
+  
+  switch (env) {
+    case 'dev':
+      return import.meta.env.VITE_API_BASE_URL_DEV || 'http://13.51.107.20/api';
+    case 'stage':
+      return import.meta.env.VITE_API_BASE_URL_STAGE || 'https://dev.the-pilatesroom.com/prod/api';
+    case 'prod':
+      return import.meta.env.VITE_API_BASE_URL_PROD || 'https://dev.the-pilatesroom.com/prod/api';
+    default:
+      // Fallback to production for safety
+      return import.meta.env.VITE_API_BASE_URL_PROD || 'https://dev.the-pilatesroom.com/prod/api';
+  }
+};
+
+// Base URL from environment
+const BASE_URL = getApiBaseUrl();
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
@@ -21,10 +40,18 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Log request details for debugging
+    console.log(`[API] ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`, {
+      params: config.params,
+      data: config.data,
+      headers: { ...config.headers, Authorization: token ? 'Bearer ***' : undefined }
+    });
     
     return config;
   },
   (error) => {
+    console.error('[API Request Error]', error);
     return Promise.reject(error);
   }
 );
@@ -32,10 +59,23 @@ apiClient.interceptors.request.use(
 // Response interceptor - handle errors globally
 apiClient.interceptors.response.use(
   (response) => {
+    // Log successful response
+    console.log(`[API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`, {
+      status: response.status,
+      data: response.data
+    });
     return response;
   },
   async (error: AxiosError) => {
     const { response } = error;
+    
+    // Log error response
+    console.error(`[API Error] ${error.config?.method?.toUpperCase()} ${error.config?.url}`, {
+      status: response?.status,
+      statusText: response?.statusText,
+      data: response?.data,
+      message: error.message
+    });
     
     // Handle 401 Unauthorized - logout user
     if (response?.status === 401) {
