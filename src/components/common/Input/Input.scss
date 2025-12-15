@@ -1,0 +1,221 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  width: 100%;
+
+  &--error {
+    .input-wrapper {
+      border-color: $color-error;
+    }
+
+    .input:focus {
+      border-color: $color-error;
+    }
+  }
+
+  &--success {
+    .input-wrapper {
+      border-color: $color-success;
+    }
+  }
+
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    .input-wrapper {
+      background-color: $color-background-secondary;
+    }
+  }
+
+  &--focused {
+    .input-wrapper {
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+    }
+  }
+}
+
+.input-label {
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  margin-bottom: 2px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: $color-white;
+  border: 2px solid $color-border;
+  border-radius: $border-radius-md;
+  transition: all $transition-base;
+}
+
+.input {
+  flex: 1;
+  width: 100%;
+  padding: $spacing-md;
+  border: none;
+  outline: none;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  background: transparent;
+
+  &::placeholder {
+    color: $color-text-tertiary;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &--has-prefix {
+    padding-inline-start: $spacing-xl + $spacing-md;
+  }
+
+  &--has-suffix {
+    padding-inline-end: $spacing-xl + $spacing-md;
+  }
+}
+
+// Size variants
+.input-container--small {
+  .input {
+    padding: $spacing-sm;
+    font-size: $font-size-sm;
+  }
+
+  .input--has-prefix {
+    padding-inline-start: $spacing-lg + $spacing-sm;
+  }
+
+  .input--has-suffix {
+    padding-inline-end: $spacing-lg + $spacing-sm;
+  }
+}
+
+.input-container--large {
+  .input {
+    padding: $spacing-lg;
+    font-size: $font-size-lg;
+  }
+
+  .input--has-prefix {
+    padding-inline-start: $spacing-xxl + $spacing-lg;
+  }
+
+  .input--has-suffix {
+    padding-inline-end: $spacing-xxl + $spacing-lg;
+  }
+}
+
+// Icons
+.input-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-secondary;
+  pointer-events: none;
+
+  &--prefix {
+    inset-inline-start: $spacing-md;
+  }
+
+  &--suffix {
+    inset-inline-end: $spacing-md;
+  }
+}
+
+.input-suffix {
+  position: absolute;
+  inset-inline-end: $spacing-md;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+// Clear button
+.input-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: $color-text-tertiary;
+  color: $color-white;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all $transition-base;
+
+  &:hover {
+    background: $color-text-secondary;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+// Password toggle
+.input-password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: color $transition-base;
+
+  &:hover {
+    color: $color-text-primary;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+// Error message
+.input-error {
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  color: $color-error;
+  margin-top: 2px;
+}
+
+// RTL support
+[dir='rtl'] {
+  .input-icon--prefix {
+    inset-inline-start: auto;
+    inset-inline-end: $spacing-md;
+  }
+
+  .input-icon--suffix {
+    inset-inline-end: auto;
+    inset-inline-start: $spacing-md;
+  }
+
+  .input-suffix {
+    inset-inline-end: auto;
+    inset-inline-start: $spacing-md;
+  }
+}

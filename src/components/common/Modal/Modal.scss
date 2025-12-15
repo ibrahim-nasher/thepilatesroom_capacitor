@@ -1,0 +1,151 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: modal-fade-in $transition-slow;
+
+  @media (min-width: 768px) {
+    align-items: center;
+  }
+}
+
+.modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-white;
+  border-radius: $border-radius-lg $border-radius-lg 0 0;
+  max-height: 90vh;
+  width: 100%;
+  animation: modal-slide-up $transition-slow;
+
+  @media (min-width: 768px) {
+    border-radius: $border-radius-lg;
+    max-height: 85vh;
+  }
+
+  // Sizes
+  &--small {
+    @media (min-width: 768px) {
+      max-width: 400px;
+    }
+  }
+
+  &--medium {
+    @media (min-width: 768px) {
+      max-width: 600px;
+    }
+  }
+
+  &--large {
+    @media (min-width: 768px) {
+      max-width: 900px;
+    }
+  }
+
+  &--fullscreen {
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+
+    @media (min-width: 768px) {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-lg;
+    border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
+
+    // Safe area support for iOS
+    @supports (padding-top: env(safe-area-inset-top)) {
+      padding-top: calc($spacing-lg + env(safe-area-inset-top));
+    }
+  }
+
+  &__title {
+    font-family: $font-family-primary;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-xs;
+    border: none;
+    background: transparent;
+    color: $color-text-secondary;
+    cursor: pointer;
+    border-radius: $border-radius-sm;
+    transition: all $transition-base;
+
+    &:hover {
+      background-color: $color-background-secondary;
+      color: $color-text-primary;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    svg {
+      display: block;
+    }
+  }
+
+  // Content
+  &__content {
+    flex: 1;
+    padding: $spacing-lg;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    // Safe area support for iOS
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      padding-bottom: calc($spacing-lg + env(safe-area-inset-bottom));
+    }
+  }
+}
+
+// Animations
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+// RTL support
+[dir='rtl'] {
+  .modal__header {
+    flex-direction: row-reverse;
+  }
+}

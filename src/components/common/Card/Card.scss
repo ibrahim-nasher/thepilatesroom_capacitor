@@ -1,0 +1,121 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.card {
+  background-color: $color-white;
+  border-radius: $border-radius-lg;
+  transition: all $transition-base;
+  overflow: hidden;
+  position: relative;
+
+  // Variants
+  &--default {
+    border: none;
+  }
+
+  &--outlined {
+    border: 1px solid $color-border;
+  }
+
+  // Padding
+  &--padding-none {
+    padding: 0;
+  }
+
+  &--padding-small {
+    padding: $spacing-md;
+  }
+
+  &--padding-medium {
+    padding: $spacing-lg;
+  }
+
+  &--padding-large {
+    padding: $spacing-xl;
+  }
+
+  // Elevation (shadows)
+  &--elevation-none {
+    box-shadow: none;
+  }
+
+  &--elevation-low {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  &--elevation-medium {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &--elevation-high {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  // Clickable
+  &--clickable {
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    width: 100%;
+    text-align: start;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover {
+      transform: translateY(-2px);
+      
+      &.card--elevation-low {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+      }
+
+      &.card--elevation-medium {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      &.card--elevation-high {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+      
+      &.card--elevation-low {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+
+      &.card--elevation-medium {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      &.card--elevation-high {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+    }
+
+    // Ripple effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba($color-primary, 0.1);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    &:active::before {
+      width: 300px;
+      height: 300px;
+    }
+  }
+}
+
+// RTL support
+[dir='rtl'] {
+  .card--clickable {
+    text-align: start; // Maintains RTL alignment
+  }
+}

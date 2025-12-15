@@ -1,0 +1,177 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.toast-container {
+  position: fixed;
+  left: $spacing-md;
+  right: $spacing-md;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+
+  &--top {
+    top: $spacing-md;
+
+    // Safe area support for iOS
+    @supports (padding-top: env(safe-area-inset-top)) {
+      top: calc($spacing-md + env(safe-area-inset-top));
+    }
+  }
+
+  &--bottom {
+    bottom: $spacing-md;
+
+    // Safe area support for iOS
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      bottom: calc($spacing-md + env(safe-area-inset-bottom));
+    }
+  }
+
+  @media (min-width: 768px) {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-lg;
+  background-color: $color-white;
+  border-radius: $border-radius-lg;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  width: 100%;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all $transition-base;
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // Types
+  &--success {
+    border-left: 4px solid $color-success;
+
+    .toast__icon {
+      color: $color-success;
+    }
+  }
+
+  &--error {
+    border-left: 4px solid $color-error;
+
+    .toast__icon {
+      color: $color-error;
+    }
+  }
+
+  &--warning {
+    border-left: 4px solid $color-warning;
+
+    .toast__icon {
+      color: $color-warning;
+    }
+  }
+
+  &--info {
+    border-left: 4px solid $color-primary;
+
+    .toast__icon {
+      color: $color-primary;
+    }
+  }
+
+  // Icon
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      display: block;
+    }
+  }
+
+  // Message
+  &__message {
+    flex: 1;
+    font-family: $font-family-primary;
+    font-size: $font-size-base;
+    color: $color-text-primary;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  // Close button
+  &__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-xs;
+    border: none;
+    background: transparent;
+    color: $color-text-secondary;
+    cursor: pointer;
+    border-radius: $border-radius-sm;
+    transition: all $transition-base;
+
+    &:hover {
+      background-color: $color-background-secondary;
+      color: $color-text-primary;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    svg {
+      display: block;
+    }
+  }
+}
+
+// RTL support
+[dir='rtl'] {
+  .toast {
+    &--success,
+    &--error,
+    &--warning,
+    &--info {
+      border-left: none;
+      border-right: 4px solid;
+    }
+
+    &--success {
+      border-right-color: $color-success;
+    }
+
+    &--error {
+      border-right-color: $color-error;
+    }
+
+    &--warning {
+      border-right-color: $color-warning;
+    }
+
+    &--info {
+      border-right-color: $color-primary;
+    }
+  }
+
+  .toast-container {
+    @media (min-width: 768px) {
+      right: 50%;
+      left: auto;
+      transform: translateX(50%);
+    }
+  }
+}
