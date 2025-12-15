@@ -11,9 +11,10 @@
   border-top: 1px solid $color-border;
   @include flex-row;
   justify-content: space-around;
-  align-items: center;
+  align-items: stretch;
   z-index: 1000;
   box-shadow: 0 -2px 8px rgba($color-black, 0.1);
+  padding-bottom: env(safe-area-inset-bottom, 0);
   
   &__item {
     @include flex-column;
@@ -24,6 +25,7 @@
     color: $color-text-secondary;
     transition: color $transition-fast;
     position: relative;
+    padding: $spacing-xs 0;
     
     &--active {
       color: $color-primary;
@@ -42,10 +44,15 @@
   &__icon {
     position: relative;
     margin-bottom: $spacing-xxs;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     
     svg {
       width: 24px;
       height: 24px;
+      display: block;
     }
   }
   

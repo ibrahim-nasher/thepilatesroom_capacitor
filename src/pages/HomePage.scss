@@ -1,0 +1,340 @@
+@import '../styles/colors';
+
+.home-page {
+  height: 100%;
+  overflow-y: auto;
+  background: $white;
+  padding-bottom: 16px;
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: $white;
+
+  &__avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    object-fit: cover;
+    border: 2px solid $accent-color;
+  }
+
+  &__center {
+    flex: 1;
+    padding: 0 12px;
+  }
+
+  &__greeting {
+    font-size: 16px;
+    font-weight: 500;
+    color: $text-dark;
+    margin: 0;
+  }
+
+  &__notification {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.date-section {
+  padding: 8px 16px 16px;
+  background: $white;
+
+  &__date {
+    font-size: 14px;
+    color: $text-gray;
+    margin: 0 0 4px;
+  }
+
+  &__day {
+    font-size: 24px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0;
+  }
+}
+
+.calendar-section {
+  padding: 0 16px 16px;
+  background: $white;
+}
+
+.calendar-dates {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.calendar-date {
+  flex-shrink: 0;
+  width: 48px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: none;
+  background: $light-gray;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &__number {
+    font-size: 18px;
+    font-weight: 600;
+    color: $text-dark;
+  }
+
+  &__day {
+    font-size: 12px;
+    color: $text-gray;
+    text-transform: uppercase;
+  }
+
+  &--selected {
+    background: $accent-color;
+
+    .calendar-date__number,
+    .calendar-date__day {
+      color: $white;
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.filter-section {
+  padding: 0 16px 16px;
+  background: $white;
+}
+
+.filter-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: $light-gray;
+  border-radius: 8px;
+  position: relative;
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  &__label {
+    font-size: 14px;
+    color: $text-dark;
+    font-weight: 500;
+  }
+
+  &__select {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: $text-dark;
+    outline: none;
+    cursor: pointer;
+  }
+}
+
+.booking-tabs {
+  display: flex;
+  gap: 12px;
+  padding: 0 16px 16px;
+  background: $white;
+}
+
+.booking-tab {
+  flex: 1;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: $badge-gray;
+  color: $text-gray;
+
+  &--active {
+    background: $accent-color;
+    color: $white;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.classes-list {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &__empty {
+    text-align: center;
+    color: $text-gray;
+    padding: 40px 16px;
+    font-size: 16px;
+  }
+}
+
+.class-card {
+  background: $white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__time {
+    font-size: 14px;
+    color: $text-gray;
+    background: $badge-gray;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+
+  &__duration {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $white;
+    background: $badge-green;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 32px;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__name {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0;
+    flex: 1;
+  }
+
+  &__type {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+    text-transform: capitalize;
+
+    &--group {
+      background: $badge-peach;
+      color: #8b6f47;
+    }
+
+    &--private {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__trainer,
+  &__capacity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: $text-gray;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__action {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    border: 2px solid $accent-color;
+    background: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.9);
+      background: $accent-color;
+    }
+
+    &--waitlist {
+      border-color: $text-gray;
+      opacity: 0.5;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}

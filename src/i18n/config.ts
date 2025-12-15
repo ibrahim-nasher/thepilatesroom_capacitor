@@ -39,8 +39,8 @@ export const initI18n = async (): Promise<void> => {
     .use(initReactI18next)
     .init({
       resources: {
-        en: enTranslations,
-        ar: arTranslations,
+        en: enTranslations.en,
+        ar: arTranslations.ar,
       },
       lng: storedLanguage,
       fallbackLng: 'en',

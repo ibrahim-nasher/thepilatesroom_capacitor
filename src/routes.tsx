@@ -12,7 +12,7 @@ import RegisterPage from '@pages/Auth/RegisterPage';
 import ForgotPasswordPage from '@pages/Auth/ForgotPasswordPage';
 
 // Main Pages
-import HomePage from '@pages/Home/HomePage';
+import HomePage from '@pages/HomePage';
 import ClassesPage from '@pages/Classes/ClassesPage';
 import ClassDetailPage from '@pages/Classes/ClassDetailPage';
 import PackagesPage from '@pages/Packages/PackagesPage';

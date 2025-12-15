@@ -97,7 +97,22 @@
         "myPackages": "My Packages",
         "recentBookings": "Recent Bookings",
         "noUpcomingClasses": "No upcoming classes",
-        "viewAll": "View All"
+        "viewAll": "View All",
+        "goodMorning": "Good morning",
+        "goodAfternoon": "Good afternoon",
+        "goodEvening": "Good evening",
+        "pilatesType": "Pilates Type",
+        "all": "All",
+        "mat": "Mat",
+        "reformer": "Reformer",
+        "barre": "Barre",
+        "bookIndividual": "Book individual",
+        "bookAll": "Book All",
+        "noClasses": "No classes available",
+        "group": "Group",
+        "private": "Private",
+        "spotsRemaining": "Spots Remaining",
+        "noSpots": "0 Spots Remaining"
       },
       "classes": {
         "title": "Classes",

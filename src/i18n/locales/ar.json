@@ -97,7 +97,22 @@
         "myPackages": "باقاتي",
         "recentBookings": "الحجوزات الأخيرة",
         "noUpcomingClasses": "لا توجد حصص قادمة",
-        "viewAll": "عرض الكل"
+        "viewAll": "عرض الكل",
+        "goodMorning": "صباح الخير",
+        "goodAfternoon": "مساء الخير",
+        "goodEvening": "مساء الخير",
+        "pilatesType": "نوع البيلاتس",
+        "all": "الكل",
+        "mat": "حصيرة",
+        "reformer": "ريفورمر",
+        "barre": "بار",
+        "bookIndividual": "حجز فردي",
+        "bookAll": "حجز الكل",
+        "noClasses": "لا توجد حصص متاحة",
+        "group": "مجموعة",
+        "private": "خاص",
+        "spotsRemaining": "مقاعد متبقية",
+        "noSpots": "0 مقاعد متبقية"
       },
       "classes": {
         "title": "الحصص",

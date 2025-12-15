@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { initI18n, i18n } from '@i18n';
 import { getFirebaseConfig, isFirebaseConfigured } from './config/firebase';
 import { useAuthStore } from '@store';
@@ -19,6 +20,24 @@ const App: React.FC = () => {
   useEffect(() => {
     const initialize = async () => {
       try {
+        // Initialize safe area CSS variables
+        const setCSSVariables = () => {
+          const root = document.documentElement;
+          root.style.setProperty('--safe-area-top', 'env(safe-area-inset-top, 0px)');
+          root.style.setProperty('--safe-area-bottom', 'env(safe-area-inset-bottom, 0px)');
+          root.style.setProperty('--safe-area-left', 'env(safe-area-inset-left, 0px)');
+          root.style.setProperty('--safe-area-right', 'env(safe-area-inset-right, 0px)');
+        };
+        setCSSVariables();
+        
+        // Configure status bar
+        try {
+          await StatusBar.setStyle({ style: Style.Light });
+          await StatusBar.setBackgroundColor({ color: '#ffffff' });
+        } catch (e) {
+          console.log('StatusBar not available (web)');
+        }
+        
         // Show splash screen explicitly (in case it was hidden)
         await SplashScreen.show({
           autoHide: false,

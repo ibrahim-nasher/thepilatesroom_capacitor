@@ -11,18 +11,27 @@ html {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  height: 100%;
   font-family: $font-family-primary;
   font-size: $font-size-base;
   line-height: 1.5;
   color: $color-text-primary;
   background: $color-background;
-  overflow-x: hidden;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;
 }
 
 /* Remove default button styles */
