@@ -15,3 +15,5 @@ export type { LoadingProps } from './Loading';
 
 export { Toast } from './Toast';
 export type { ToastProps, ToastType, ToastPosition } from './Toast';
+
+export { SplashScreen } from './SplashScreen';

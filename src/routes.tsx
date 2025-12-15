@@ -23,15 +23,21 @@ import ProfilePage from '@pages/Profile/ProfilePage';
 import EditProfilePage from '@pages/Profile/EditProfilePage';
 import NotificationsPage from '@pages/Notifications/NotificationsPage';
 
-// Protected Route wrapper
+// Protected Route wrapper - only for features that require login (booking, profile)
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const isGuest = useAuthStore(state => state.isGuest);
   
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !isGuest) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  // If guest user tries to access protected feature, redirect to login
+  if (isGuest) {
     return <Navigate to="/login" replace />;
   }
   
@@ -80,7 +86,17 @@ const AppRoutes: React.FC = () => {
         />
       </Route>
 
-      {/* Protected routes (Main App) */}
+      {/* Main app routes - accessible to everyone (guest + authenticated) */}
+      <Route element={<MainLayout />}>
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/classes" element={<ClassesPage />} />
+        <Route path="/classes/:scheduleId" element={<ClassDetailPage />} />
+        <Route path="/packages" element={<PackagesPage />} />
+        <Route path="/packages/:packageId" element={<PackageDetailPage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
+      </Route>
+
+      {/* Protected routes - require actual login */}
       <Route
         element={
           <ProtectedRoute>
@@ -88,16 +104,10 @@ const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       >
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/classes" element={<ClassesPage />} />
-        <Route path="/classes/:scheduleId" element={<ClassDetailPage />} />
-        <Route path="/packages" element={<PackagesPage />} />
-        <Route path="/packages/:packageId" element={<PackageDetailPage />} />
         <Route path="/bookings" element={<BookingsPage />} />
         <Route path="/bookings/:bookingId" element={<BookingDetailPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/edit" element={<EditProfilePage />} />
-        <Route path="/notifications" element={<NotificationsPage />} />
       </Route>
 
       {/* Default redirect */}
