@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import { classApi, type ClassSchedule, type Category } from '../services/api/classes';
+import { bookingApi } from '../services/api/bookings';
+import BookingModal from '../components/modals/BookingModal';
 import './HomePage.scss';
 
 interface DateDay {
@@ -22,6 +24,9 @@ const HomePage: React.FC = () => {
   const [classes, setClasses] = useState<ClassSchedule[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedClass, setSelectedClass] = useState<ClassSchedule | null>(null);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [waitlistLoading, setWaitlistLoading] = useState<string | null>(null);
 
   useEffect(() => {
     generateCalendarDates(new Date());
@@ -96,9 +101,59 @@ const HomePage: React.FC = () => {
     return t('home.goodEvening');
   };
 
-  const handleBookClass = (classId: string) => {
-    console.log('Booking class:', classId);
-    // TODO: Navigate to booking page or show booking modal
+  const handleBookClass = (classSchedule: ClassSchedule) => {
+    if (!user) {
+      // Navigate to login - for now just alert
+      alert(t('auth.pleaseLogin'));
+      return;
+    }
+
+    if (classSchedule.is_waitlist) {
+      // Handle waitlist
+      handleWaitlist(classSchedule);
+    } else {
+      // Open booking modal
+      setSelectedClass(classSchedule);
+      setIsBookingModalOpen(true);
+    }
+  };
+
+  const handleWaitlist = async (classSchedule: ClassSchedule) => {
+    if (!user) return;
+
+    try {
+      setWaitlistLoading(classSchedule.id);
+      
+      const waitlistData = {
+        class_id: parseInt(classSchedule.class_id),
+        class_schedule_id: parseInt(classSchedule.id),
+        startDate: classSchedule.date,
+      };
+
+      // Check if already in waitlist (you may want to track this in state)
+      const isInWaitlist = false; // TODO: Track waitlist state
+
+      if (isInWaitlist) {
+        await bookingApi.removeFromWaitlist(waitlistData);
+        alert(t('waitlist.removed'));
+      } else {
+        await bookingApi.addToWaitlist(waitlistData);
+        alert(t('waitlist.added'));
+      }
+
+      // Refresh classes to update waitlist status
+      await loadClasses();
+    } catch (err: any) {
+      console.error('Waitlist action failed:', err);
+      alert(err.response?.data?.message || t('waitlist.failed'));
+    } finally {
+      setWaitlistLoading(null);
+    }
+  };
+
+  const handleBookingSuccess = () => {
+    alert(t('booking.success'));
+    loadClasses(); // Refresh to update spots remaining
   };
 
   const formatTime = (time: string) => {
@@ -258,10 +313,12 @@ const HomePage: React.FC = () => {
 
               <button 
                 className={`class-card__action ${classItem.is_waitlist ? 'class-card__action--waitlist' : ''}`}
-                onClick={() => handleBookClass(classItem.id)}
-                disabled={classItem.status !== 'active'}
+                onClick={() => handleBookClass(classItem)}
+                disabled={classItem.status !== 'active' || waitlistLoading === classItem.id}
               >
-                {classItem.is_waitlist ? (
+                {waitlistLoading === classItem.id ? (
+                  <span className="class-card__spinner">⏳</span>
+                ) : classItem.is_waitlist ? (
                   <img src="/icons/common/clock.png" alt="Waitlist" />
                 ) : (
                   <img src="/icons/home/plus.png" alt="Book" />
@@ -271,6 +328,17 @@ const HomePage: React.FC = () => {
           ))
         )}
       </div>
+
+      {/* Booking Modal */}
+      <BookingModal
+        classSchedule={selectedClass}
+        isOpen={isBookingModalOpen}
+        onClose={() => {
+          setIsBookingModalOpen(false);
+          setSelectedClass(null);
+        }}
+        onSuccess={handleBookingSuccess}
+      />
     </div>
   );
 };
