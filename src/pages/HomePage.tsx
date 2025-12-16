@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import { classApi, type ClassSchedule, type Category } from '../services/api/classes';
 import { bookingApi } from '../services/api/bookings';
-import BookingModal from '../components/modals/BookingModal';
 import './HomePage.scss';
 
 interface DateDay {
@@ -15,6 +15,8 @@ interface DateDay {
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuthStore();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [calendarDates, setCalendarDates] = useState<DateDay[]>([]);
@@ -24,13 +26,19 @@ const HomePage: React.FC = () => {
   const [classes, setClasses] = useState<ClassSchedule[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedClass, setSelectedClass] = useState<ClassSchedule | null>(null);
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [waitlistLoading, setWaitlistLoading] = useState<string | null>(null);
 
   useEffect(() => {
     generateCalendarDates(new Date());
     loadCategories();
+    
+    // Check if returning from successful booking
+    if (location.state?.bookingSuccess) {
+      alert(t('booking.bookingSuccess'));
+      loadClasses(); // Refresh classes
+      // Clear the state
+      navigate(location.pathname, { replace: true, state: {} });
+    }
   }, []);
 
   useEffect(() => {
@@ -112,9 +120,8 @@ const HomePage: React.FC = () => {
       // Handle waitlist
       handleWaitlist(classSchedule);
     } else {
-      // Open booking modal
-      setSelectedClass(classSchedule);
-      setIsBookingModalOpen(true);
+      // Navigate to booking page
+      navigate('/booking', { state: { classSchedule } });
     }
   };
 
@@ -149,11 +156,6 @@ const HomePage: React.FC = () => {
     } finally {
       setWaitlistLoading(null);
     }
-  };
-
-  const handleBookingSuccess = () => {
-    alert(t('booking.success'));
-    loadClasses(); // Refresh to update spots remaining
   };
 
   const formatTime = (time: string) => {
@@ -328,17 +330,6 @@ const HomePage: React.FC = () => {
           ))
         )}
       </div>
-
-      {/* Booking Modal */}
-      <BookingModal
-        classSchedule={selectedClass}
-        isOpen={isBookingModalOpen}
-        onClose={() => {
-          setIsBookingModalOpen(false);
-          setSelectedClass(null);
-        }}
-        onSuccess={handleBookingSuccess}
-      />
     </div>
   );
 };

@@ -1,62 +1,10 @@
 @use '../../styles/colors' as *;
 
-.booking-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-  background: white;
-  touch-action: none;
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: auto;
-
-  // Desktop: show overlay background
-  @media (min-width: 768px) {
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &__overlay {
-    display: none; // Hidden on mobile
-
-    // Desktop: show overlay
-    @media (min-width: 768px) {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    }
-  }
-
-  &__content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: white;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    touch-action: auto;
-
-    // Desktop: fixed width with rounded corners
-    @media (min-width: 768px) {
-      position: relative;
-      max-width: 500px;
-      max-height: 90vh;
-      height: auto;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    }
-  }
+.booking-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: $white;
 
   &__header {
     display: flex;
@@ -65,10 +13,8 @@
     padding: 20px;
     padding-top: max(20px, env(safe-area-inset-top));
     border-bottom: 1px solid $border-gray;
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 1;
+    background: $white;
+    flex-shrink: 0;
   }
 
   &__back {
@@ -115,6 +61,13 @@
     &:hover {
       color: $text-dark;
     }
+  }
+
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
   &__class-details {
@@ -279,9 +232,9 @@
     gap: 12px;
     padding: 20px;
     padding-bottom: max(20px, env(safe-area-inset-bottom));
-    position: sticky;
-    bottom: 0;
-    background: white;
+    border-top: 1px solid $border-gray;
+    background: $white;
+    flex-shrink: 0;
   }
 
   &__button {

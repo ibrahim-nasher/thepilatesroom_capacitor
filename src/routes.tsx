@@ -19,6 +19,7 @@ import PackagesPage from '@pages/Packages/PackagesPage';
 import PackageDetailPage from '@pages/Packages/PackageDetailPage';
 import BookingsPage from '@pages/Bookings/BookingsPage';
 import BookingDetailPage from '@pages/Bookings/BookingDetailPage';
+import BookingPage from '@pages/Booking/BookingPage';
 import ProfilePage from '@pages/Profile/ProfilePage';
 import EditProfilePage from '@pages/Profile/EditProfilePage';
 import NotificationsPage from '@pages/Notifications/NotificationsPage';
@@ -93,6 +94,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/classes/:scheduleId" element={<ClassDetailPage />} />
         <Route path="/packages" element={<PackagesPage />} />
         <Route path="/packages/:packageId" element={<PackageDetailPage />} />
+        <Route path="/booking" element={<BookingPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
       </Route>
 
