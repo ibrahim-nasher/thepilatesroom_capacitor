@@ -145,6 +145,21 @@
         "individual": "Individual",
         "allCategories": "All Categories"
       },
+      "classDetail": {
+        "title": "Class Detail",
+        "package": "Package",
+        "classBalance": "Class Balance",
+        "date": "Date",
+        "unbookedClasses": "Unbooked Classes",
+        "scheduledClasses": "Scheduled Classes",
+        "noScheduledClasses": "No scheduled classes yet",
+        "seats": "seats",
+        "individual": "Individual Classes",
+        "allClasses": "All Classes",
+        "cancelDescription": "Classes can be cancelled up to 24 hours before the scheduled time.",
+        "notFound": "Package details not found",
+        "loadFailed": "Failed to load package details"
+      },
       "packages": {
         "title": "Packages",
         "myPackages": "My Packages",

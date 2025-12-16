@@ -143,6 +143,21 @@
         "individual": "فردي",
         "allCategories": "جميع الفئات"
       },
+      "classDetail": {
+        "title": "تفاصيل الحصة",
+        "package": "الباقة",
+        "classBalance": "رصيد الحصص",
+        "date": "التاريخ",
+        "unbookedClasses": "الحصص غير المحجوزة",
+        "scheduledClasses": "الحصص المجدولة",
+        "noScheduledClasses": "لا توجد حصص مجدولة بعد",
+        "seats": "مقاعد",
+        "individual": "حصص فردية",
+        "allClasses": "جميع الحصص",
+        "cancelDescription": "يمكن إلغاء الحصص حتى 24 ساعة قبل الموعد المحدد.",
+        "notFound": "لم يتم العثور على تفاصيل الباقة",
+        "loadFailed": "فشل تحميل تفاصيل الباقة"
+      },
       "packages": {
         "title": "الباقات",
         "myPackages": "باقاتي",

@@ -1,0 +1,237 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.class-detail {
+  min-height: 100vh;
+  background-color: $color-background;
+  padding-bottom: env(safe-area-inset-bottom);
+
+  // Header
+  &__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: $color-white;
+    padding: $spacing-md $spacing-lg;
+    padding-top: calc($spacing-md + env(safe-area-inset-top));
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  &__back {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: $color-text-primary;
+    padding: $spacing-xs;
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:active {
+      opacity: 0.6;
+    }
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: 600;
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  // Loading & Error States
+  &__loading,
+  &__error,
+  &__no-classes {
+    text-align: center;
+    padding: $spacing-xxl;
+    color: $color-text-secondary;
+  }
+
+  &__error {
+    color: $color-error;
+  }
+
+  // Package Information Card
+  &__package-card {
+    padding: $spacing-lg;
+  }
+
+  .package-info {
+    background: $color-white;
+    border-radius: $border-radius-lg;
+    padding: $spacing-lg;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    &__main {
+      margin-bottom: $spacing-lg;
+      padding-bottom: $spacing-lg;
+      border-bottom: 1px solid $color-border;
+    }
+
+    &__name {
+      font-size: $font-size-xl;
+      font-weight: 600;
+      color: $color-text-primary;
+      margin: 0 0 $spacing-xs 0;
+    }
+
+    &__session {
+      font-size: $font-size-md;
+      color: $color-text-secondary;
+      margin: 0 0 $spacing-xs 0;
+    }
+
+    &__type {
+      font-size: $font-size-sm;
+      color: $color-text-tertiary;
+      margin: 0;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: $spacing-lg;
+    }
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    &__label {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+
+    &__value {
+      font-size: $font-size-md;
+      font-weight: 500;
+      color: $color-text-primary;
+    }
+  }
+
+  // Scheduled Classes Section
+  &__classes {
+    padding: 0 $spacing-lg $spacing-lg;
+  }
+
+  &__classes-title {
+    font-size: $font-size-lg;
+    font-weight: 600;
+    color: $color-text-primary;
+    margin: 0 0 $spacing-md 0;
+  }
+
+  .class-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    &__item {
+      background: $color-white;
+      border-radius: $border-radius-md;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  .class-item {
+    padding: $spacing-md;
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: $spacing-sm;
+      gap: $spacing-sm;
+    }
+
+    &__name {
+      font-size: $font-size-lg;
+      font-weight: 600;
+      color: $color-text-primary;
+      margin: 0;
+      flex: 1;
+    }
+
+    &__date {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      white-space: nowrap;
+    }
+
+    &__details {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+    }
+
+    &__info {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+
+    &__icon {
+      font-size: $font-size-md;
+      min-width: 20px;
+    }
+
+    &__text {
+      flex: 1;
+    }
+  }
+
+  // Footer Note
+  &__footer {
+    padding: $spacing-lg;
+  }
+
+  &__note {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+// RTL Support
+[dir='rtl'] {
+  .class-detail {
+    &__back {
+      transform: scaleX(-1);
+    }
+
+    .package-info {
+      &__grid {
+        direction: rtl;
+      }
+    }
+
+    .class-item {
+      &__header {
+        direction: rtl;
+      }
+
+      &__details {
+        direction: rtl;
+      }
+    }
+  }
+}
