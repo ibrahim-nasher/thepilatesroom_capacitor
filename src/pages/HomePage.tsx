@@ -241,21 +241,24 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Filter */}
-      <div className="filter-section">
-        <div className="filter-dropdown">
-          <img src="/icons/common/calendar.png" alt="" className="filter-dropdown__icon" />
-          <span className="filter-dropdown__label">{t('home.pilatesType')}</span>
-          <select 
-            className="filter-dropdown__select"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+      {/* Category Chips */}
+      <div className="category-section">
+        <div className="category-chips">
+          <button
+            className={`category-chip ${selectedCategory === 'all' ? 'category-chip--active' : ''}`}
+            onClick={() => setSelectedCategory('all')}
           >
-            <option value="all">{t('home.all')}</option>
-            {categories.map(cat => (
-              <option key={cat.id} value={cat.id}>{cat.name}</option>
-            ))}
-          </select>
+            {t('home.all')}
+          </button>
+          {categories.map(cat => (
+            <button
+              key={cat.id}
+              className={`category-chip ${selectedCategory === cat.id ? 'category-chip--active' : ''}`}
+              onClick={() => setSelectedCategory(cat.id)}
+            >
+              {cat.name}
+            </button>
+          ))}
         </div>
       </div>
 
