@@ -132,7 +132,18 @@
         "noClasses": "No classes available",
         "minutes": "minutes",
         "spots": "spots",
-        "spotsLeft": "spots left"
+        "spotsLeft": "spots left",
+        "book": "Book",
+        "joinWaitlist": "Join Waitlist",
+        "uncategorized": "Uncategorized",
+        "loadFailed": "Failed to load classes",
+        "searchPlaceholder": "Search classes...",
+        "day": "Day",
+        "week": "Week",
+        "month": "Month",
+        "allClasses": "All Classes",
+        "individual": "Individual",
+        "allCategories": "All Categories"
       },
       "packages": {
         "title": "Packages",

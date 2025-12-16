@@ -130,7 +130,18 @@
         "noClasses": "لا توجد حصص متاحة",
         "minutes": "دقيقة",
         "spots": "مقاعد",
-        "spotsLeft": "مقاعد متبقية"
+        "spotsLeft": "مقاعد متبقية",
+        "book": "احجز",
+        "joinWaitlist": "انضم لقائمة الانتظار",
+        "uncategorized": "غير مصنف",
+        "loadFailed": "فشل تحميل الحصص",
+        "searchPlaceholder": "ابحث عن حصص...",
+        "day": "يوم",
+        "week": "أسبوع",
+        "month": "شهر",
+        "allClasses": "جميع الحصص",
+        "individual": "فردي",
+        "allCategories": "جميع الفئات"
       },
       "packages": {
         "title": "الباقات",
