@@ -7,12 +7,11 @@
   background: $color-background;
   position: relative;
   overflow: hidden;
-  
+
   &__content {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-bottom: calc(60px + var(--safe-area-bottom)); // Bottom nav height + safe area
     -webkit-overflow-scrolling: touch;
     position: relative;
   }

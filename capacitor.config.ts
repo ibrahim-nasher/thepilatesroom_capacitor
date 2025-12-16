@@ -30,7 +30,7 @@ const config: CapacitorConfig = {
   },
   ios: {
     scheme: 'pilates',
-    contentInset: 'always',
+    contentInset: 'never',
   },
   android: {
     allowMixedContent: false,

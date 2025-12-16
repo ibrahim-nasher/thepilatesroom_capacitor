@@ -5,6 +5,7 @@
   "type": "module",
   "description": "ThePilatesRoom - Pilates class booking mobile app",
   "scripts": {
+    "dev": "vite",
     "build": "tsc && vite build",
     "build:ios": "npm run build && npx cap sync ios && open ios/App/App.xcworkspace",
     "build:android": "npm run build && npx cap sync android && npx cap open android",

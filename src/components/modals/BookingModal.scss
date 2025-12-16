@@ -10,7 +10,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 0;
+  -webkit-overflow-scrolling: auto;
 
   &__overlay {
     position: absolute;
@@ -19,17 +20,36 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
+    touch-action: none;
   }
 
   &__content {
     position: relative;
     background: white;
-    border-radius: 16px;
-    max-width: 500px;
+    border-radius: 0;
     width: 100%;
-    max-height: 90vh;
+    height: 100vh;
+    height: 100dvh; // Dynamic viewport height for mobile browsers
     overflow-y: auto;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+
+    // Mobile-first: full screen
+    @media (max-width: 767px) {
+      max-width: 100%;
+      margin: 0;
+      border-radius: 0;
+    }
+
+    // Desktop: fixed width with rounded corners
+    @media (min-width: 768px) {
+      max-width: 500px;
+      max-height: 90vh;
+      height: auto;
+      border-radius: 16px;
+      margin: 20px;
+    }
   }
 
   &__header {
@@ -37,6 +57,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top));
     border-bottom: 1px solid $border-gray;
     position: sticky;
     top: 0;
@@ -251,7 +272,7 @@
     display: flex;
     gap: 12px;
     padding: 20px;
-    border-top: 1px solid $border-gray;
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
     position: sticky;
     bottom: 0;
     background: white;

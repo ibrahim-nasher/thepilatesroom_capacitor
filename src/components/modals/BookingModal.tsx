@@ -31,12 +31,21 @@ const BookingModal: React.FC<BookingModalProps> = ({ classSchedule, isOpen, onCl
   useEffect(() => {
     if (isOpen) {
       loadActivePackages();
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
     } else {
       // Reset state when closed
       setStep('select-package');
       setSelectedPackage('');
       setError(null);
+      // Restore body scroll
+      document.body.style.overflow = '';
     }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
   const loadActivePackages = async () => {
@@ -161,7 +170,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ classSchedule, isOpen, onCl
   return (
     <div className="booking-modal">
       <div className="booking-modal__overlay" onClick={onClose}></div>
-      <div className="booking-modal__content">
+      <div className="booking-modal__content" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="booking-modal__header">
           {step === 'confirm' && (

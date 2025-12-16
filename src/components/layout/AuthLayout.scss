@@ -4,11 +4,13 @@
 
 .auth-layout {
   min-height: 100vh;
+  min-height: 100dvh; // Dynamic viewport height for mobile browsers
   background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: -10%) 100%);
   @include flex-column;
   
   &__header {
     padding: $spacing-lg;
+    padding-top: max($spacing-lg, env(safe-area-inset-top));
     text-align: center;
   }
   
@@ -25,6 +27,7 @@
     @include flex-column;
     justify-content: center;
     padding: $spacing-md;
+    padding-bottom: max($spacing-md, env(safe-area-inset-bottom));
     overflow-y: auto;
   }
 }
