@@ -8,6 +8,7 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { initI18n, i18n } from '@i18n';
 import { getFirebaseConfig, isFirebaseConfigured } from './config/firebase';
 import { useAuthStore } from '@store';
+import ErrorBoundary from '@components/common/ErrorBoundary';
 import AppRoutes from './routes';
 import './styles/global.scss';
 
@@ -84,11 +85,13 @@ const App: React.FC = () => {
   }
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </I18nextProvider>
+    <ErrorBoundary>
+      <I18nextProvider i18n={i18n}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </I18nextProvider>
+    </ErrorBoundary>
   );
 };
 

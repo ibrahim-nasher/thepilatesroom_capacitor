@@ -2,25 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '@services/api/client';
+import ErrorBoundary from '@components/common/ErrorBoundary';
 import './PackagesPage.scss';
 
 interface PackageSession {
-  id: string;
+  id: number;
   package_session: string;
   package_session_ar: string;
+  description: string;
+  description_ar: string;
 }
 
 interface Package {
-  id: string;
+  id: number;
   package_name: string;
-  package_name_ar: string;
-  package_price: number;
+  package_name_ar: string | null;
+  price: number;
   class_limit: number;
-  package_type: number; // 1 = package, 2 = drop-in
-  package_duration: number; // days
-  session_id: string;
-  category_id: string;
-  created_at: string;
+  package_type: number; // 0 = package, 1 = drop-in
+  duration: number; // months
+  session_id: number;
+  package_session: PackageSession;
+  description: string;
+  description_ar: string | null;
+  status: string;
 }
 
 interface PackageCategory {
@@ -38,7 +43,7 @@ const PackagesPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [packageSessions, setPackageSessions] = useState<PackageSession[]>([]);
   const [packages, setPackages] = useState<Package[]>([]);
-  const [selectedSessionId, setSelectedSessionId] = useState<string>('all');
+  const [selectedSessionId, setSelectedSessionId] = useState<number | 'all'>('all');
   const [packageCategories, setPackageCategories] = useState<PackageCategory[]>([]);
 
   useEffect(() => {
@@ -56,17 +61,34 @@ const PackagesPage: React.FC = () => {
       setLoading(true);
       setError(null);
 
+      console.log('[PackagesPage] Loading package sessions and packages...');
+
       // Load package sessions and packages in parallel
       const [sessionsRes, packagesRes] = await Promise.all([
-        api.get<{ status: boolean; packageSession: PackageSession[] }>('/v1/package/session'),
+        api.get<{ status: boolean; packageSession: PackageSession[] }>('/v1/package/getPackageSession'),
         api.get<{ status: boolean; packages: Package[] }>('/v1/package/', { params: { type: 'active' } })
       ]);
+
+      console.log('[PackagesPage] Sessions response:', sessionsRes);
+      console.log('[PackagesPage] Packages response:', packagesRes);
 
       setPackageSessions(sessionsRes.packageSession || []);
       setPackages(packagesRes.packages || []);
     } catch (err: any) {
-      console.error('Failed to load packages:', err);
-      setError(err.message || t('packages.loadFailed'));
+      console.error('[PackagesPage] Error loading packages:', {
+        message: err.message,
+        response: err.response,
+        status: err.response?.status,
+        data: err.response?.data
+      });
+      
+      // Show more detailed error message
+      const errorMessage = err.response?.data?.message 
+        || err.response?.data?.error 
+        || err.message 
+        || t('packages.loadFailed');
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -96,7 +118,7 @@ const PackagesPage: React.FC = () => {
     setPackageCategories(grouped);
   };
 
-  const toggleCategory = (sessionId: string) => {
+  const toggleCategory = (sessionId: number) => {
     setPackageCategories(prev =>
       prev.map(cat =>
         cat.session.id === sessionId
@@ -121,19 +143,20 @@ const PackagesPage: React.FC = () => {
   };
 
   const getPackageName = (pkg: Package): string => {
-    return isRTL ? pkg.package_name_ar : pkg.package_name;
+    return isRTL ? (pkg.package_name_ar || pkg.package_name) : pkg.package_name;
   };
 
   const formatPrice = (price: number): string => {
-    return `${price.toFixed(2)} ${t('packages.currency')}`;
+    if (typeof price !== 'number' || isNaN(price)) return `0 ${t('packages.currency')}`;
+    return `${price.toFixed(0)} ${t('packages.currency')}`;
   };
 
-  const getPackageDuration = (days: number): string => {
-    if (days === 1) return t('packages.oneDay');
-    if (days === 7) return t('packages.oneWeek');
-    if (days === 30) return t('packages.oneMonth');
-    if (days === 365) return t('packages.oneYear');
-    return `${days} ${t('packages.days')}`;
+  const getPackageDuration = (duration: number): string => {
+    if (duration === 1) return t('packages.oneMonth');
+    if (duration === 2) return `2 ${t('packages.months')}`;
+    if (duration === 3) return `3 ${t('packages.months')}`;
+    if (duration === 12) return t('packages.oneYear');
+    return `${duration} ${t('packages.months')}`;
   };
 
   if (loading) {
@@ -234,12 +257,12 @@ const PackagesPage: React.FC = () => {
 
                         <div className="package-card__detail">
                           <span className="package-card__label">{t('packages.validity')}</span>
-                          <span className="package-card__value">{getPackageDuration(pkg.package_duration)}</span>
+                          <span className="package-card__value">{getPackageDuration(pkg.duration)}</span>
                         </div>
 
                         <div className="package-card__detail package-card__detail--price">
                           <span className="package-card__label">{t('packages.price')}</span>
-                          <span className="package-card__price">{formatPrice(pkg.package_price)}</span>
+                          <span className="package-card__price">{formatPrice(pkg.price)}</span>
                         </div>
                       </div>
 
@@ -258,4 +281,11 @@ const PackagesPage: React.FC = () => {
   );
 };
 
-export default PackagesPage;
+// Wrap with ErrorBoundary
+const PackagesPageWithErrorBoundary: React.FC = () => (
+  <ErrorBoundary>
+    <PackagesPage />
+  </ErrorBoundary>
+);
+
+export default PackagesPageWithErrorBoundary;
