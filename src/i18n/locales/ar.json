@@ -205,7 +205,15 @@
         "noUpcomingBookings": "لا توجد حجوزات قادمة",
         "noPastBookings": "لا توجد حجوزات سابقة",
         "bookingConfirmed": "تم تأكيد الحجز!",
-        "bookingError": "فشل إنشاء الحجز"
+        "bookingError": "فشل إنشاء الحجز",
+        "bookedClasses": "الحصص المحجوزة",
+        "remaining": "المتبقي",
+        "validUntil": "صالح حتى",
+        "scheduledClasses": "الحصص المجدولة",
+        "moreClasses": "حصص أخرى",
+        "active": "نشط",
+        "loadFailed": "فشل تحميل الحجوزات",
+        "loading": "جاري تحميل الحجوزات..."
       },
       "profile": {
         "title": "الملف الشخصي",

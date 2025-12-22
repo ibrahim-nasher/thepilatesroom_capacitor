@@ -207,7 +207,15 @@
         "noUpcomingBookings": "No upcoming bookings",
         "noPastBookings": "No past bookings",
         "bookingConfirmed": "Booking confirmed!",
-        "bookingError": "Failed to create booking"
+        "bookingError": "Failed to create booking",
+        "bookedClasses": "Booked Classes",
+        "remaining": "Remaining",
+        "validUntil": "Valid Until",
+        "scheduledClasses": "Scheduled Classes",
+        "moreClasses": "more classes",
+        "active": "Active",
+        "loadFailed": "Failed to load bookings",
+        "loading": "Loading bookings..."
       },
       "booking": {
         "selectPackage": "Select Package",
