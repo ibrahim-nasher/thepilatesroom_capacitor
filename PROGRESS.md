@@ -299,37 +299,24 @@ Successfully built complete component library with native styling:
    - 14 English + 14 Arabic translations
    - Safe area support and RTL
 
-5. **BookingsPage** (`src/pages/Bookings/BookingsPage.tsx`) - NEXT
-   - Upcoming bookings list
-   - Past bookings history
-   - Booking cancellation
-   - Calendar integration
+5. **BookingsPage** ✅ COMPLETE (`src/pages/Bookings/BookingsPage.tsx`)
+   - Two tabs: Upcoming and Past bookings
+   - Package booking cards with:
+     * Package name and session type
+     * Booked/total classes and remaining
+     * Valid until date
+     * Status badge (Active/Completed)
+   - Scheduled classes preview (first 3)
+   - "+X more classes" indicator
+   - Navigation to class details page
+   - 8 English + 8 Arabic translations
+   - Safe area support and RTL
 
-3. **Register Page** (`src/pages/Auth/RegisterPage.tsx`)
-   - Registration form (name, email, password)
-   - Password confirmation
-   - Terms & conditions checkbox
-   - Register button with loading state
-   - Email verification flow
-   - Success/error handling
-
-4. **Forgot Password Page** (`src/pages/Auth/ForgotPasswordPage.tsx`)
-   - Email input
-   - Send reset link button
-   - Success message with Toast
-   - Back to login link
-
-5. **OTP Verification** (if needed)
-   - OTP input component
-   - Resend code functionality
-   - Timer countdown
-
-6. **Protected Routes Enhancement**
-   - Redirect to login if not authenticated
-   - Loading state during auth check
-   - Persist auth state
-
-**Target**: Working demo with login/register flows and protected navigation
+6. **Profile & Notifications** - NEXT
+   - Profile page enhancements
+   - Settings and preferences
+   - Notifications page
+   - Push notification integration
 
 ## Project Structure
 
@@ -413,6 +400,7 @@ Matches native Android/iOS apps:
 - **ClassesPage with search and filters** ✅
 - **ClassDetailPage with package info** ✅
 - **PackagesPage with session filtering** ✅
+- **BookingsPage with upcoming/past tabs** ✅
 - Profile viewing
 - Native components (Button, Input, Card, Modal, Toast, Loading)
 - **iOS safe area support (notch/home indicator)** ✅
@@ -420,7 +408,8 @@ Matches native Android/iOS apps:
 
 ---
 **Last Updated**: December 22, 2024
-**Current Phase**: Phase 5 - Classes and Packages
-**Status**: Classes, ClassDetail, and PackagesPage complete
-**Recent Addition**: PackagesPage with session filtering and package cards
-**Next**: Implement BookingsPage to view upcoming/past bookings
+**Current Phase**: Phase 5 - Classes, Packages & Bookings
+**Status**: Classes, ClassDetail, Packages, and Bookings pages complete
+**Recent Addition**: BookingsPage with upcoming/past tabs and package booking cards
+**Next**: Profile and Notifications pages
+
